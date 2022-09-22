@@ -65,6 +65,7 @@
         countAndSort(objects.map(o => o.name)).forEach(([name]) => {
             const button = document.body.insertBefore(document.createElement('button'), input)
             button.textContent = name
+            button.style.margin = '0 8px'
             button.addEventListener('click', () => {
                 localStorage.setItem(Date.now(), JSON.stringify(objects.find(o=>o.name === name)))
                 location.reload()
