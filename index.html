@@ -62,12 +62,11 @@
             return Object.entries(arr.reduce((prev, curr) => (prev[curr] = ++prev[curr] || 1, prev), {})).sort((a,b) => b[1]-a[1])
         }
         const objects = entries.map(([_, v]) => JSON.parse(v))
-        const kcalMap = Object.fromEntries(objects.map(o=>[o.name, o.kcal]))
         countAndSort(objects.map(o => o.name)).forEach(([name]) => {
             const button = document.body.insertBefore(document.createElement('button'), input)
             button.textContent = name
             button.addEventListener('click', () => {
-                localStorage.setItem(Date.now(), JSON.stringify({name, kcal: kcalMap[name]}))
+                localStorage.setItem(Date.now(), JSON.stringify(objects.find(o=>o.name === name)))
                 location.reload()
             })
         })
