@@ -36,6 +36,7 @@
             location.reload()
         }
         const h1 = document.querySelector('h1')
+        const input = document.querySelector('input')
         function addItem([createdAt, json]) {
             const data = JSON.parse(json)
             const tr = document.createElement('tr')
@@ -52,10 +53,24 @@
             else if (kcal >= 500) h1.style.color = '#EF6C00'
         }
         const today = new Date().toLocaleDateString('sv')
-        Object.entries(localStorage)
-            .filter(([k]) => !isNaN(k) && new Date(parseInt(k, 10)).toLocaleDateString('sv') === today)
+        const entries = Object.entries(localStorage).filter(([k]) => !isNaN(k))
+        entries.filter(([k]) => new Date(parseInt(k, 10)).toLocaleDateString('sv') === today)
             .sort((a, b) => parseInt(a[0], 10) - parseInt(b[0], 10))
             .forEach(addItem)
+        
+        function countAndSort(arr) { 
+            return Object.entries(arr.reduce((prev, curr) => (prev[curr] = ++prev[curr] || 1, prev), {})).sort((a,b) => b[1]-a[1])
+        }
+        const objects = entries.map(([_, v]) => JSON.parse(v))
+        const kcalMap = Object.fromEntries(objects.map(o=>[o.name, o.kcal]))
+        countAndSort(objects.map(o => o.name)).forEach(([name]) => {
+            const button = document.body.insertBefore(document.createElement('button'), input)
+            button.textContent = name
+            button.addEventListener('click', () => {
+                localStorage.setItem(Date.now(), JSON.stringify({name, kcal: kcalMap[name]}))
+                location.reload()
+            })
+        })
     </script>
 </body>
 </html>
