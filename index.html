@@ -34,7 +34,7 @@
 
             const kcal = parseInt(h1.textContent.slice(0, -4), 10) + data.kcal
             h1.textContent = kcal + h1.textContent.slice(-4)
-            if (kcal >= 1000) h1.style.color = '#F44336'
+            if (kcal >= 1000) h1.style.color = '#C62828'
             else if (kcal >= 500) h1.style.color = '#EF6C00'
         }
         const today = new Date().toLocaleDateString('sv')
