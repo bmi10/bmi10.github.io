@@ -46,13 +46,13 @@
             td2.align = 'right'
             document.querySelector('tbody').appendChild(tr)
 
-            kcal = parseInt(h1.textContent.slice(0, -4), 10) + data.kcal
+            const kcal = parseInt(h1.textContent.slice(0, -4), 10) + data.kcal
             h1.textContent = kcal + h1.textContent.slice(-4)
             if (kcal >= 1000) h1.style.color = '#F44336'
             else if (kcal >= 500) h1.style.color = '#EF6C00'
         }
         const today = new Date().toLocaleDateString('sv')
-        Object.entries(localStorage).filter(([k]) => !isNaN(k) && new Date(parseInt(k, 10)).toLocaleDateString('sv') === today).forEach(addItem)
+        Object.entries(localStorage).filter(([k]) => !isNaN(k) && new Date(parseInt(k, 10)).toLocaleDateString('sv') === today).sort((a, b) => parseInt(a[0], 10) - parseInt(b[0], 10)).forEach(addItem)
     </script>
 </body>
 </html>
