@@ -52,7 +52,10 @@
             else if (kcal >= 500) h1.style.color = '#EF6C00'
         }
         const today = new Date().toLocaleDateString('sv')
-        Object.entries(localStorage).filter(([k]) => !isNaN(k) && new Date(parseInt(k, 10)).toLocaleDateString('sv') === today).sort((a, b) => parseInt(a[0], 10) - parseInt(b[0], 10)).forEach(addItem)
+        Object.entries(localStorage)
+            .filter(([k]) => !isNaN(k) && new Date(parseInt(k, 10)).toLocaleDateString('sv') === today)
+            .sort((a, b) => parseInt(a[0], 10) - parseInt(b[0], 10))
+            .forEach(addItem)
     </script>
 </body>
 </html>
