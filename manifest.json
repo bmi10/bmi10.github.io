@@ -3,8 +3,8 @@
   "short_name": "500k",
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#288990",
-  "background_color": "#f9f9f8",
+  "theme_color": "#81D4FA",
+  "background_color": "#F5F5F5",
   "icons": [
     {
       "src": "images/logo-192x192.png",
