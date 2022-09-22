@@ -35,6 +35,24 @@
             localStorage.setItem(Date.now(), JSON.stringify(groups))
             location.reload()
         }
+        const h1 = document.querySelector('h1')
+        function addItem([createdAt, json]) {
+            const data = JSON.parse(json)
+            const tr = document.createElement('tr')
+            const td1 = tr.appendChild(document.createElement('td'))
+            td1.textContent = data.name
+            const td2 = tr.appendChild(document.createElement('td'))
+            td2.textContent = data.kcal
+            td2.align = 'right'
+            document.querySelector('tbody').appendChild(tr)
+
+            kcal = parseInt(h1.textContent.slice(0, -4), 10) + data.kcal
+            h1.textContent = kcal + h1.textContent.slice(-4)
+            if (kcal >= 1000) h1.style.color = '#F44336'
+            else if (kcal >= 500) h1.style.color = '#EF6C00'
+        }
+        const today = new Date().toLocaleDateString('sv')
+        Object.entries(localStorage).filter(([k]) => !isNaN(k) && new Date(parseInt(k, 10)).toLocaleDateString('sv') === today).forEach(addItem)
     </script>
 </body>
 </html>
