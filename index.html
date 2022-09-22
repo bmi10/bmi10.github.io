@@ -28,8 +28,12 @@
     <input placeholder="商品名\d{1,3}" onchange="changeHandler(this.value)">
     <script>
         function changeHandler(value) {
-            navigator.setAppBadge(30)
-            alert(value)
+            const m = value.normalize('NFKC').match(/(?<name>.+?)(?<kcal>\d{1,3})$/)
+            if (!m) return
+            const groups = m.groups
+            groups.kcal = parseInt(groups.kcal, 10)
+            localStorage.setItem(Date.now(), JSON.stringify(groups))
+            location.reload()
         }
     </script>
 </body>
