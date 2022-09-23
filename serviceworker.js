@@ -12,7 +12,13 @@
 var CACHE_NAME = 'version_03'
 var URLS = [               // Add URL you want to cache in this list.
   '/',                     // If you have separate JS/CSS files,
-  '/index.html'            // add path to those files here
+  '/index.html',           // add path to those files here
+  '/images/logo-32x32.png',
+  '/images/logo-192x192.png',
+  '/images/logo-512x512.png',
+  '/images/logo.svg',
+  '/images/plane.svg',
+  '/images/'
 ]
 
 // Respond with cached resources
