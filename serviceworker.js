@@ -9,7 +9,7 @@
  *
  */
 
-var CACHE_NAME = 'version_02'
+var CACHE_NAME = 'version_03'
 var URLS = [               // Add URL you want to cache in this list.
   '/',                     // If you have separate JS/CSS files,
   '/index.html'            // add path to those files here
