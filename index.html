@@ -40,6 +40,7 @@
             document.querySelector('tbody').appendChild(tr)
 
             const kcal = parseInt(h1.textContent.slice(0, -4), 10) + data.kcal
+            fetch('https://push14-default-rtdb.asia-southeast1.firebasedatabase.app/k.json', {method: 'PUT', body: kcal})
             h1.textContent = kcal + h1.textContent.slice(-4)
             if (kcal >= 1000) h1.style.color = '#E53935'
             else if (kcal >= 500) h1.style.color = '#EF6C00'
