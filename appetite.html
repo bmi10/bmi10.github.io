@@ -23,7 +23,6 @@
   <h1>我慢できないとき</h1>
 <script type="module">
 const today = new Date().toLocaleDateString('sv')
-fetch('https://push14-default-rtdb.asia-southeast1.firebasedatabase.app/k.json').then(r=>r.json()).then(kcal => document.all.kcal.value = kcal)
 const items = await fetch('https://docs.google.com/spreadsheets/d/1O9WfgSyzf3CGJFrgx_-Azw533VvaCyeW_OgxRBeeGgU/export?format=csv').then(r=>r.text()).then(csv => csv.split('\r\n').slice(1).map(line=>line.split(',')))
 items.forEach(([name, kcal, tooltip]) => {
     const h2 = document.body.appendChild(document.createElement('h2'))
@@ -35,6 +34,7 @@ items.forEach(([name, kcal, tooltip]) => {
         location.reload()
     })
 })
+document.all.kcal.value = Object.values(await fetch('https://waist3-default-rtdb.asia-southeast1.firebasedatabase.app/.json').then(r=>r.json())).filter(({createdAt}) => new Date(createdAt).toLocaleDateString('sv') === today).map(i=>i.kcal).reduce((a,b) => a+b)
 </script>
 </body>
 
