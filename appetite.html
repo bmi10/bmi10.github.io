@@ -28,6 +28,10 @@
     if (document.all.kcal.value >= 1000) document.body.style.background = 'red'
   }
   const today = new Date().toLocaleDateString('sv')
+  fetch('https://waist3-default-rtdb.asia-southeast1.firebasedatabase.app/.json').then(r=>r.json()).then(r => {
+    document.all.kcal.value = Object.values(r).filter(({createdAt}) => new Date(createdAt).toLocaleDateString('sv') === today).map(i=>i.kcal).reduce((a,b) => a+b, 0)
+    updateTheme()
+  })
   const items = await fetch('https://docs.google.com/spreadsheets/d/1O9WfgSyzf3CGJFrgx_-Azw533VvaCyeW_OgxRBeeGgU/export?format=csv').then(r=>r.text()).then(csv => csv.split('\r\n').slice(1).map(line=>line.split(',')))
   items.forEach(([name, kcal, tooltip]) => {
     const h2 = document.body.appendChild(document.createElement('h2'))
@@ -39,8 +43,6 @@
       updateTheme()
     })
   })
-  document.all.kcal.value = Object.values(await fetch('https://waist3-default-rtdb.asia-southeast1.firebasedatabase.app/.json').then(r=>r.json())).filter(({createdAt}) => new Date(createdAt).toLocaleDateString('sv') === today).map(i=>i.kcal).reduce((a,b) => a+b, 0)
-  updateTheme()
 </script>
 </body>
 
