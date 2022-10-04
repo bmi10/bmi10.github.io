@@ -28,20 +28,31 @@
     if (document.all.kcal.value >= 1000) document.body.style.background = 'red'
   }
   const today = new Date().toLocaleDateString('sv')
-  fetch('https://waist3-default-rtdb.asia-southeast1.firebasedatabase.app/.json').then(r=>r.json()).then(r => {
-    document.all.kcal.value = Object.values(r).filter(({createdAt}) => new Date(createdAt).toLocaleDateString('sv') === today).map(i=>i.kcal).reduce((a,b) => a+b, 0)
-    updateTheme()
-  })
-  const items = await fetch('https://docs.google.com/spreadsheets/d/1O9WfgSyzf3CGJFrgx_-Azw533VvaCyeW_OgxRBeeGgU/export?format=csv').then(r=>r.text()).then(csv => csv.split('\r\n').slice(1).map(line=>line.split(',')))
-  items.forEach(([name, kcal, tooltip]) => {
-    const h2 = document.body.appendChild(document.createElement('h2'))
-    h2.textContent = name
-    h2.addEventListener('click', async () => {
-      fetch('https://waist3-default-rtdb.asia-southeast1.firebasedatabase.app/.json', {method: 'POST', body: JSON.stringify({name, kcal: parseInt(kcal, 10), createdAt: Date.now()})})
-      document.all.kcal.value = parseInt(document.all.kcal.value, 10) + parseInt(kcal, 10)
-      fetch('https://push14-default-rtdb.asia-southeast1.firebasedatabase.app/k.json', {method: 'PUT', body: document.all.kcal.value})
-      updateTheme()
+  const promise = new Promise(async resolve => {
+    const items = await fetch('https://docs.google.com/spreadsheets/d/1O9WfgSyzf3CGJFrgx_-Azw533VvaCyeW_OgxRBeeGgU/export?format=csv').then(r=>r.text()).then(csv => csv.split('\r\n').slice(1).map(line=>line.split(',')))
+    items.forEach(([name, kcal, tooltip]) => {
+      const h2 = document.body.appendChild(document.createElement('h2'))
+      h2.title = name
+      h2.textContent = name
+      h2.addEventListener('click', async () => {
+        h2.style.textDecoration = 'line-through'
+        fetch('https://waist3-default-rtdb.asia-southeast1.firebasedatabase.app/.json', {method: 'POST', body: JSON.stringify({name, kcal: parseInt(kcal, 10), createdAt: Date.now()})})
+        document.all.kcal.value = parseInt(document.all.kcal.value, 10) + parseInt(kcal, 10)
+        fetch('https://push14-default-rtdb.asia-southeast1.firebasedatabase.app/k.json', {method: 'PUT', body: document.all.kcal.value})
+        updateTheme()
+      })
     })
+    resolve()
+  })
+  fetch('https://waist3-default-rtdb.asia-southeast1.firebasedatabase.app/.json').then(r=>r.json()).then(async r => {
+    const todayItems = Object.values(r).filter(({createdAt}) => new Date(createdAt).toLocaleDateString('sv') === today)
+    document.all.kcal.value = todayItems.map(i=>i.kcal).reduce((a,b) => a+b, 0)
+    updateTheme()
+    await promise
+    for (const i of todayItems) {
+      const h2 = document.querySelector(`[title="${i.name}"]`)
+      if (h2) h2.style.textDecoration = 'line-through'
+    }
   })
 </script>
 </body>
