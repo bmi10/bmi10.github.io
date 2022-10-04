@@ -27,7 +27,9 @@ items.forEach(([name, kcal, tooltip]) => {
     const h2 = document.body.appendChild(document.createElement('h2'))
     h2.textContent = name
     h2.addEventListener('click', () => {
-        console.log(name, parseInt(kcal, 10), kcal)
+        fetch('https://waist3-default-rtdb.asia-southeast1.firebasedatabase.app/.json', {method: 'POST', body: JSON.stringify({name, kcal: parseInt(kcal, 10), createdAt: Date.now()})})
+        const body = 500
+        fetch('https://push14-default-rtdb.asia-southeast1.firebasedatabase.app/k.json', {method: 'PUT', body})
     })
 })
 </script>
