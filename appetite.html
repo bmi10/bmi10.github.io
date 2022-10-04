@@ -10,7 +10,7 @@
 </head>
 
 <body>
-  <h1>500kcal</h1>
+  <h1><output name="kcal<output>kcal</h1>
   <h1>外食禁止</h1>
   <h1>エレベーター禁止</h1>
   <h1>食欲を抑える方法</h1>
@@ -22,14 +22,17 @@
   <h2>寝る💤</h2>
   <h1>我慢できないとき</h1>
 <script type="module">
+const today = new Date().toLocaleDateString('sv')
+fetch('https://push14-default-rtdb.asia-southeast1.firebasedatabase.app/k.json').then(r=>r.json()).then(kcal => )
 const items = await fetch('https://docs.google.com/spreadsheets/d/1O9WfgSyzf3CGJFrgx_-Azw533VvaCyeW_OgxRBeeGgU/export?format=csv').then(r=>r.text()).then(csv => csv.split('\r\n').slice(1).map(line=>line.split(',')))
 items.forEach(([name, kcal, tooltip]) => {
     const h2 = document.body.appendChild(document.createElement('h2'))
     h2.textContent = name
-    h2.addEventListener('click', () => {
-        fetch('https://waist3-default-rtdb.asia-southeast1.firebasedatabase.app/.json', {method: 'POST', body: JSON.stringify({name, kcal: parseInt(kcal, 10), createdAt: Date.now()})})
-        const body = 500
-        fetch('https://push14-default-rtdb.asia-southeast1.firebasedatabase.app/k.json', {method: 'PUT', body})
+    h2.addEventListener('click', async () => {
+        await fetch('https://waist3-default-rtdb.asia-southeast1.firebasedatabase.app/.json', {method: 'POST', body: JSON.stringify({name, kcal: parseInt(kcal, 10), createdAt: Date.now()})})
+        const body = Object.values(await fetch('https://waist3-default-rtdb.asia-southeast1.firebasedatabase.app/.json').then(r=>r.json())).filter(({createdAt}) => new Date(createdAt).toLocaleDateString('sv') === today).map(i=>i.kcal).reduce((a,b) => a+b)
+        await fetch('https://push14-default-rtdb.asia-southeast1.firebasedatabase.app/k.json', {method: 'PUT', body})
+        location.reload()
     })
 })
 </script>
