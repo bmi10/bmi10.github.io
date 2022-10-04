@@ -20,20 +20,16 @@
   <h2>歯磨き🪥</h2>
   <h2>寝る💤</h2>
   <h1>我慢できないとき</h1>
-  <h2>野菜一日これ一本🥬</h2>
-  <h2>ナチュレ恵🥛</h2>
-  <h2>サラダチキン🐔</h2>
-  <h2>サーディン🐟</h2>
-  <h2>サバ🐟</h2>
-  <h2>野菜🥬</h2>
-  <h2>ベリーミックス🫐</h2>
-  <h2>コーヒー☕</h2>
-  <h2>白湯♨</h2>
-  <h2>生トマト🍅</h2>
-  <h2>納豆🫘</h2>
-  <h2>わかめ🥬</h2>
-  <h2>アボカド🥑</h2>
-  <h2>卵🥚</h2>
+<script>
+const items = await fetch('https://docs.google.com/spreadsheets/d/1O9WfgSyzf3CGJFrgx_-Azw533VvaCyeW_OgxRBeeGgU/export?format=csv').then(r=>r.text()).then(csv => csv.split('\r\n').slice(1).map(line=>line.split(',')))
+items.forEach(([name, kcal, tooltip]) => {
+    const h2 = document.body.appendChild(document.createElement('h2'))
+    h2.textContent = name
+    h2.addEventListener('click', () => {
+        console.log(name, parseInt(kcal, 10), kcal)
+    })
+})
+</script>
 </body>
 
 </html>
