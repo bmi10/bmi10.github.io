@@ -20,7 +20,7 @@
   <h2>歯磨き🪥</h2>
   <h2>寝る💤</h2>
   <h1>我慢できないとき</h1>
-<script>
+<script type="module">
 const items = await fetch('https://docs.google.com/spreadsheets/d/1O9WfgSyzf3CGJFrgx_-Azw533VvaCyeW_OgxRBeeGgU/export?format=csv').then(r=>r.text()).then(csv => csv.split('\r\n').slice(1).map(line=>line.split(',')))
 items.forEach(([name, kcal, tooltip]) => {
     const h2 = document.body.appendChild(document.createElement('h2'))
