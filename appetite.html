@@ -10,7 +10,7 @@
 </head>
 
 <body>
-  <h1><output name="kcal"></output>kcal</h1>
+  <h1><output id="kcal"></output>kcal</h1>
   <h1>外食禁止</h1>
   <h1>エレベーター禁止</h1>
   <h1>食欲を抑える方法</h1>
@@ -28,10 +28,10 @@ items.forEach(([name, kcal, tooltip]) => {
     const h2 = document.body.appendChild(document.createElement('h2'))
     h2.textContent = name
     h2.addEventListener('click', async () => {
-        await fetch('https://waist3-default-rtdb.asia-southeast1.firebasedatabase.app/.json', {method: 'POST', body: JSON.stringify({name, kcal: parseInt(kcal, 10), createdAt: Date.now()})})
-        const body = Object.values(await fetch('https://waist3-default-rtdb.asia-southeast1.firebasedatabase.app/.json').then(r=>r.json())).filter(({createdAt}) => new Date(createdAt).toLocaleDateString('sv') === today).map(i=>i.kcal).reduce((a,b) => a+b)
-        await fetch('https://push14-default-rtdb.asia-southeast1.firebasedatabase.app/k.json', {method: 'PUT', body})
-        location.reload()
+        fetch('https://waist3-default-rtdb.asia-southeast1.firebasedatabase.app/.json', {method: 'POST', body: JSON.stringify({name, kcal: parseInt(kcal, 10), createdAt: Date.now()})})
+        document.all.kcal.value = parseInt(document.all.kcal.value, 10) + parseInt(kcal, 10)
+        fetch('https://push14-default-rtdb.asia-southeast1.firebasedatabase.app/k.json', {method: 'PUT', body: document.all.kcal.value})
+        
     })
 })
 document.all.kcal.value = Object.values(await fetch('https://waist3-default-rtdb.asia-southeast1.firebasedatabase.app/.json').then(r=>r.json())).filter(({createdAt}) => new Date(createdAt).toLocaleDateString('sv') === today).map(i=>i.kcal).reduce((a,b) => a+b)
