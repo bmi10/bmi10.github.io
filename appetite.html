@@ -22,18 +22,24 @@
   <h2>寝る💤</h2>
   <h1>我慢できないとき</h1>
 <script type="module">
-const today = new Date().toLocaleDateString('sv')
-const items = await fetch('https://docs.google.com/spreadsheets/d/1O9WfgSyzf3CGJFrgx_-Azw533VvaCyeW_OgxRBeeGgU/export?format=csv').then(r=>r.text()).then(csv => csv.split('\r\n').slice(1).map(line=>line.split(',')))
-items.forEach(([name, kcal, tooltip]) => {
+  function updateTheme() {
+    if (document.all.kcal.value >= 500) document.body.style.background = 'orange'
+    if (document.all.kcal.value >= 1000) document.body.style.background = 'red'
+  }
+  const today = new Date().toLocaleDateString('sv')
+  const items = await fetch('https://docs.google.com/spreadsheets/d/1O9WfgSyzf3CGJFrgx_-Azw533VvaCyeW_OgxRBeeGgU/export?format=csv').then(r=>r.text()).then(csv => csv.split('\r\n').slice(1).map(line=>line.split(',')))
+  items.forEach(([name, kcal, tooltip]) => {
     const h2 = document.body.appendChild(document.createElement('h2'))
     h2.textContent = name
     h2.addEventListener('click', async () => {
-        fetch('https://waist3-default-rtdb.asia-southeast1.firebasedatabase.app/.json', {method: 'POST', body: JSON.stringify({name, kcal: parseInt(kcal, 10), createdAt: Date.now()})})
-        document.all.kcal.value = parseInt(document.all.kcal.value, 10) + parseInt(kcal, 10)
-        fetch('https://push14-default-rtdb.asia-southeast1.firebasedatabase.app/k.json', {method: 'PUT', body: document.all.kcal.value})
+      fetch('https://waist3-default-rtdb.asia-southeast1.firebasedatabase.app/.json', {method: 'POST', body: JSON.stringify({name, kcal: parseInt(kcal, 10), createdAt: Date.now()})})
+      document.all.kcal.value = parseInt(document.all.kcal.value, 10) + parseInt(kcal, 10)
+      fetch('https://push14-default-rtdb.asia-southeast1.firebasedatabase.app/k.json', {method: 'PUT', body: document.all.kcal.value})
+      updateTheme()
     })
-})
-document.all.kcal.value = Object.values(await fetch('https://waist3-default-rtdb.asia-southeast1.firebasedatabase.app/.json').then(r=>r.json())).filter(({createdAt}) => new Date(createdAt).toLocaleDateString('sv') === today).map(i=>i.kcal).reduce((a,b) => a+b, 0)
+  })
+  document.all.kcal.value = Object.values(await fetch('https://waist3-default-rtdb.asia-southeast1.firebasedatabase.app/.json').then(r=>r.json())).filter(({createdAt}) => new Date(createdAt).toLocaleDateString('sv') === today).map(i=>i.kcal).reduce((a,b) => a+b, 0)
+  updateTheme()
 </script>
 </body>
 
